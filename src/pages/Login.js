@@ -43,7 +43,7 @@ export default function SignIn() {
   const [error, setError] = useState();
   const classes = useStyles();
 
-  const onTokenChange = event => {
+  const onTokenChange = (event) => {
     setToken(event.target.value);
   };
 
@@ -61,7 +61,7 @@ export default function SignIn() {
 
     setIsLoading(false);
 
-    if (user && !user.scopes.includes('repo') && !user.scopes.includes('public_repo')) {
+    if (user && !user.scopes.some((scope) => scope.includes('repo'))) {
       loginError = 'Access token must have repo or public_repo scope';
     }
 

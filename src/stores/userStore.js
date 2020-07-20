@@ -9,11 +9,8 @@ export const questionSlice = createSlice({
   },
 });
 
-export const {
-  login,
-  logout,
-} = questionSlice.actions;
+export const { login, logout } = questionSlice.actions;
 
-export const selectUser = state => state.user;
+export const selectUser = (state) => state.user;
 
 export default questionSlice.reducer;

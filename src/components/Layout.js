@@ -51,8 +51,8 @@ export default function Layout({ children }) {
     setDrawerOpen(true);
   };
 
-  const onCloseDrawer = (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+  const onCloseDrawer = ({ type, key }) => {
+    if (type === 'keydown' && (key === 'Tab' || key === 'Shift')) {
       return;
     }
 
@@ -71,11 +71,7 @@ export default function Layout({ children }) {
           >
             <MenuIcon />
           </IconButton>
-          <Drawer
-            anchor="left"
-            open={drawerOpen}
-            onClose={onCloseDrawer}
-          >
+          <Drawer anchor="left" open={drawerOpen} onClose={onCloseDrawer}>
             <div
               className={classes.list}
               role="presentation"
@@ -84,13 +80,17 @@ export default function Layout({ children }) {
             >
               <List>
                 <ListItem button onClick={() => dispatch(logout())}>
-                  <ListItemIcon><LogoutIcon /></ListItemIcon>
+                  <ListItemIcon>
+                    <LogoutIcon />
+                  </ListItemIcon>
                   <ListItemText primary="Log out" />
                 </ListItem>
               </List>
             </div>
           </Drawer>
-          <Typography variant="h6" className={classes.title}>WebEdit</Typography>
+          <Typography variant="h6" className={classes.title}>
+            WebEdit
+          </Typography>
           <Avatar alt={user.name} src={user.avatar} />
         </Toolbar>
       </AppBar>
