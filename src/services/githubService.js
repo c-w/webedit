@@ -12,7 +12,7 @@ export async function fetchUser(token) {
   const payload = await response.json();
 
   if (!response.ok) {
-    throw new Error(`${response.status}: ${payload}`);
+    throw new Error(payload.message);
   }
 
   return {

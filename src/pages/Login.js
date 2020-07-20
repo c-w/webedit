@@ -51,14 +51,25 @@ export default function SignIn() {
     event.preventDefault();
 
     setIsLoading(true);
-    const user = await githubService.fetchUser(token);
+
+    let user, loginError;
+    try {
+      user = await githubService.fetchUser(token);
+    } catch (err) {
+      loginError = err.message;
+    }
+
     setIsLoading(false);
 
-    if (!user.scopes.includes('repo') && !user.scopes.includes('public_repo')) {
-      setError('Access token must have repo or public_repo scope');
-    } else {
+    if (user && !user.scopes.includes('repo') && !user.scopes.includes('public_repo')) {
+      loginError = 'Access token must have repo or public_repo scope';
+    }
+
+    if (!loginError) {
       dispatch(login(user));
       history.push(location.state?.from?.pathname || '/');
+    } else {
+      setError(loginError);
     }
   };
 
