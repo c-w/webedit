@@ -1,5 +1,14 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { persistReducer, persistStore } from 'redux-persist';
+import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit';
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 import * as localforage from 'localforage';
 import userReducer from 'stores/userStore';
 
@@ -14,6 +23,11 @@ const persistConfig = {
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, rootReducer),
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
 });
 
 export const persistor = persistStore(store);
