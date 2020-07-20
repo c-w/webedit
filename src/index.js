@@ -6,12 +6,10 @@ import App from './App';
 import store, { persistor } from './stores';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor} loading={null}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <PersistGate persistor={persistor} loading={null}>
+      <App />
+    </PersistGate>
+  </Provider>,
   document.getElementById('root')
 );
