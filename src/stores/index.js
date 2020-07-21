@@ -14,10 +14,14 @@ import {
   REGISTER,
 } from 'redux-persist';
 import * as localforage from 'localforage';
+import loadingReducer from 'stores/loadingStore';
 import userReducer from 'stores/userStore';
+import reposReducer from 'stores/reposStore';
 
 const rootReducer = combineReducers({
+  loading: loadingReducer,
   user: userReducer,
+  repos: reposReducer,
 });
 
 const persistConfig = {
