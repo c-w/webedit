@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -100,7 +102,9 @@ export default function Layout({ children }) {
             </div>
           </Drawer>
           <Typography variant="h6" className={classes.title}>
-            WebEdit
+            <Link to="/home" color="inherit" component={RouterLink}>
+              WebEdit
+            </Link>
           </Typography>
           <Avatar alt={user.name} src={user.avatar} />
         </Toolbar>

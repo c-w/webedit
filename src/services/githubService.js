@@ -3,12 +3,15 @@ const ACCEPT = 'application/vnd.github.v3+json';
 const PAGE_SIZE = 50;
 
 export async function fetchFile(token, repo, file) {
-  const response = await fetch(`${ROOT}/repos/${repo.name}/contents/${file}`, {
-    headers: {
-      Authorization: `token ${token}`,
-      Accept: ACCEPT,
-    },
-  });
+  const response = await fetch(
+    `${ROOT}/repos/${repo.owner}/${repo.name}/contents/${file}`,
+    {
+      headers: {
+        Authorization: `token ${token}`,
+        Accept: ACCEPT,
+      },
+    }
+  );
 
   if (response.status === 404) {
     return null;
@@ -42,7 +45,10 @@ export async function* fetchRepos(token) {
 
     for (const repo of payload) {
       yield {
-        name: repo.full_name,
+        owner: repo.owner.login,
+        name: repo.name,
+        description: repo.description,
+        active: !repo.archived && !repo.disabled,
       };
     }
 

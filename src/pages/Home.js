@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Layout from 'components/Layout';
+import RepoCard from 'components/RepoCard';
 import * as githubService from 'services/githubService';
 import { set as setLoading } from 'stores/loadingStore';
 import { selectUser } from 'stores/userStore';
@@ -23,6 +24,10 @@ export default function Home() {
       const loading = [];
 
       for await (const repo of githubRepos) {
+        if (!repo.active) {
+          continue;
+        }
+
         loading.push(
           githubService
             .fetchFile(user.token, repo, '.webedit.json')
@@ -40,15 +45,20 @@ export default function Home() {
     })();
   }, [user, repos, dispatch]);
 
+  const cards = repos.flatMap(({ repo, config }) =>
+    Object.entries(config).map(([fileName, settings]) => ({
+      repo,
+      fileName,
+      settings,
+      key: `${repo.owner}/${repo.name}/${fileName}`,
+    }))
+  );
+
   return (
     <Layout>
-      <ul>
-        {repos.map(({ repo, config }) => (
-          <li key={repo.name}>
-            {repo.name} {Object.keys(config)[0]}
-          </li>
-        ))}
-      </ul>
+      {cards.map((props) => (
+        <RepoCard {...props} />
+      ))}
     </Layout>
   );
 }
