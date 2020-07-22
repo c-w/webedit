@@ -55,7 +55,9 @@ export default function Layout({ children }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const onOpenDrawer = () => {
-    setDrawerOpen(true);
+    if (user != null) {
+      setDrawerOpen(true);
+    }
   };
 
   const onCloseDrawer = ({ type, key }) => {
@@ -106,7 +108,7 @@ export default function Layout({ children }) {
               WebEdit
             </Link>
           </Typography>
-          <Avatar alt={user.name} src={user.avatar} />
+          <Avatar alt={user?.name} src={user?.avatar} />
         </Toolbar>
       </AppBar>
       <main className={classes.content}>

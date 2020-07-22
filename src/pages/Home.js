@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Layout from 'components/Layout';
 import RepoCard from 'components/RepoCard';
 import * as githubService from 'services/githubService';
 import { set as setLoading } from 'stores/loadingStore';
@@ -55,10 +54,8 @@ export default function Home() {
   );
 
   return (
-    <Layout>
-      {cards.map((props) => (
-        <RepoCard {...props} />
-      ))}
-    </Layout>
+    cards.map((props) => (
+      <RepoCard {...props} />
+    ))
   );
 }

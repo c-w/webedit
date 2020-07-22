@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Form from '@rjsf/material-ui';
-import Layout from 'components/Layout';
 import { selectRepos } from 'stores/reposStore';
 
 export default function Edit() {
@@ -14,8 +13,6 @@ export default function Edit() {
   ).config[fileName];
 
   return (
-    <Layout>
-      <Form schema={config.schema} uiSchema={config.ui} />
-    </Layout>
+    <Form schema={config.schema} uiSchema={config.ui} />
   );
 }
