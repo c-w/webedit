@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route } from 'react-router-dom';
+import { HashRouter, Redirect, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PrivateRoute from 'components/PrivateRoute';
 import Home from 'pages/Home';
@@ -10,7 +10,8 @@ export default function App() {
     <div>
       <CssBaseline />
       <HashRouter>
-        <PrivateRoute exact path="/" component={Home} />
+        <Redirect from="/" to="/home" />
+        <PrivateRoute exact path="/home" component={Home} />
         <Route exact path="/login" component={Login} />
       </HashRouter>
     </div>
