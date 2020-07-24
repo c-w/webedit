@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-flex',
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   details: {
     display: 'flex',
