@@ -30,9 +30,9 @@ export default function Home() {
         loading.push(
           githubService
             .fetchFile(user.token, repo, '.webedit.json')
-            .then((text) => {
-              if (text != null) {
-                const config = JSON.parse(text);
+            .then((file) => {
+              if (file?.text != null) {
+                const config = JSON.parse(file.text);
                 dispatch(addRepo({ repo, config }));
               }
             })
@@ -53,9 +53,5 @@ export default function Home() {
     }))
   );
 
-  return (
-    cards.map((props) => (
-      <RepoCard {...props} />
-    ))
-  );
+  return cards.map((props) => <RepoCard {...props} />);
 }
