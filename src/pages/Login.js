@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import * as githubService from 'services/githubService';
 import { login } from 'stores/userStore';
+import { selectLoading } from 'stores/loadingStore';
+import { set as setLoading } from 'stores/loadingStore';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,8 +40,8 @@ export default function SignIn() {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
+  const loading = useSelector(selectLoading);
   const [token, setToken] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const classes = useStyles();
 
@@ -50,7 +52,7 @@ export default function SignIn() {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    setIsLoading(true);
+    dispatch(setLoading(true));
 
     let user, loginError;
     try {
@@ -59,7 +61,7 @@ export default function SignIn() {
       loginError = err.message;
     }
 
-    setIsLoading(false);
+    dispatch(setLoading(false));
 
     if (user && !user.scopes.some((scope) => scope.includes('repo'))) {
       loginError = 'Access token must have repo or public_repo scope';
@@ -96,7 +98,7 @@ export default function SignIn() {
             autoFocus
             value={token}
             onChange={onTokenChange}
-            disabled={isLoading}
+            disabled={loading}
             error={error != null}
             helperText={error}
           />
@@ -106,7 +108,7 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={isLoading}
+            disabled={loading}
           >
             Sign In
           </Button>
