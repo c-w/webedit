@@ -7,13 +7,15 @@ import Edit from 'pages/Edit';
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 
+const Index = () => <Redirect to="/home" />;
+
 export default function App() {
   return (
     <div>
       <CssBaseline />
       <HashRouter>
         <Layout>
-          <Redirect from="/" to="/home" />
+          <Route exact path="/" component={Index} />
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute
             exact
