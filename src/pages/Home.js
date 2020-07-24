@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import RepoCard from 'components/RepoCard';
 import * as githubService from 'services/githubService';
+import * as alertStore from 'stores/alertStore';
 import * as loadingStore from 'stores/loadingStore';
 import * as userStore from 'stores/userStore';
 import * as reposStore from 'stores/reposStore';
@@ -31,15 +32,24 @@ export default function Home() {
           githubService
             .fetchFile(user.token, repo, '.webedit.json')
             .then((file) => {
-              if (file?.text != null) {
-                const config = JSON.parse(file.text);
-                dispatch(reposStore.add({ repo, config }));
-              }
+              const config = JSON.parse(file.text);
+              dispatch(reposStore.add({ repo, config }));
             })
+            .catch((error) =>
+              error.message === 'Not Found' ||
+              error.message === 'This repository is empty.'
+                ? Promise.resolve()
+                : Promise.reject(error)
+            )
         );
       }
 
-      await Promise.all(loading);
+      try {
+        await Promise.all(loading);
+      } catch (error) {
+        dispatch(alertStore.set({ message: error.message, severity: 'error' }));
+      }
+
       dispatch(loadingStore.set(false));
     })();
   }, [user, repos, dispatch]);

@@ -48,24 +48,33 @@ export default function Edit() {
     dispatch(loadingStore.set(true));
 
     const repo = { owner, name };
-    const file = await githubService.fetchFile(user.token, repo, fileName);
+    let alert, file;
+    try {
+      file = await githubService.fetchFile(user.token, repo, fileName);
+    } catch (error) {
+      alert = { message: error.message, severity: 'error' };
+    }
 
-    let alert;
-    if (file == null) {
-      alert = { message: 'Error', severity: 'error' };
-    } else {
+    if (file) {
       const fileJson = JSON.parse(file.text);
       const fileItems = config.path
         ? jmespath.search(fileJson, config.path)
         : fileJson;
       fileItems.unshift(formData);
+
       const newFile = {
         text: JSON.stringify(fileJson, null, 2),
         sha: file.sha,
       };
 
-      await githubService.saveFile(user.token, repo, fileName, newFile);
+      try {
+        await githubService.saveFile(user.token, repo, fileName, newFile);
+      } catch (error) {
+        alert = { message: error.message, severity: 'error' };
+      }
+    }
 
+    if (!alert) {
       setFormData(null);
       alert = { message: 'Item saved', severity: 'success' };
     }

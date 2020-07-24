@@ -13,10 +13,6 @@ export async function fetchFile(token, repo, path) {
     }
   );
 
-  if (response.status === 404) {
-    return null;
-  }
-
   const payload = await response.json();
 
   if (!response.ok) {
