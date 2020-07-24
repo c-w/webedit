@@ -18,9 +18,9 @@ import SyncIcon from '@material-ui/icons/Sync';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { selectLoading } from 'stores/loadingStore';
-import { logout, selectUser } from 'stores/userStore';
-import { clear as clearRepos } from 'stores/reposStore';
+import * as loadingStore from 'stores/loadingStore';
+import * as userStore from 'stores/userStore';
+import * as reposStore from 'stores/reposStore';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Layout({ children }) {
-  const user = useSelector(selectUser);
-  const loading = useSelector(selectLoading);
+  const user = useSelector(userStore.get);
+  const loading = useSelector(loadingStore.get);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -88,13 +88,13 @@ export default function Layout({ children }) {
               onKeyDown={onCloseDrawer}
             >
               <List>
-                <ListItem button onClick={() => dispatch(clearRepos())}>
+                <ListItem button onClick={() => dispatch(reposStore.clear())}>
                   <ListItemIcon>
                     <SyncIcon />
                   </ListItemIcon>
                   <ListItemText primary="Sync account" />
                 </ListItem>
-                <ListItem button onClick={() => dispatch(logout())}>
+                <ListItem button onClick={() => dispatch(userStore.logout())}>
                   <ListItemIcon>
                     <LogoutIcon />
                   </ListItemIcon>

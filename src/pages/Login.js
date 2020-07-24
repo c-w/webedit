@@ -9,9 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import * as githubService from 'services/githubService';
-import { login } from 'stores/userStore';
-import { selectLoading } from 'stores/loadingStore';
-import { set as setLoading } from 'stores/loadingStore';
+import * as userStore from 'stores/userStore';
+import * as loadingStore from 'stores/loadingStore';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,7 +39,7 @@ export default function SignIn() {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const loading = useSelector(selectLoading);
+  const loading = useSelector(loadingStore.get);
   const [token, setToken] = useState('');
   const [error, setError] = useState();
   const classes = useStyles();
@@ -52,7 +51,7 @@ export default function SignIn() {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    dispatch(setLoading(true));
+    dispatch(loadingStore.set(true));
 
     let user, loginError;
     try {
@@ -61,14 +60,14 @@ export default function SignIn() {
       loginError = err.message;
     }
 
-    dispatch(setLoading(false));
+    dispatch(loadingStore.set(false));
 
     if (user && !user.scopes.some((scope) => scope.includes('repo'))) {
       loginError = 'Access token must have repo or public_repo scope';
     }
 
     if (!loginError) {
-      dispatch(login(user));
+      dispatch(userStore.login(user));
       history.push(location.state?.from?.pathname || '/');
     } else {
       setError(loginError);

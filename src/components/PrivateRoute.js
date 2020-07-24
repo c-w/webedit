@@ -1,10 +1,10 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUser } from 'stores/userStore';
+import * as userStore from 'stores/userStore';
 
 export default function PrivateRoute({ component: Component, ...rest }) {
-  const user = useSelector(selectUser);
+  const user = useSelector(userStore.get);
 
   return (
     <Route

@@ -8,9 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import Form from '@rjsf/material-ui';
 import * as jmespath from 'jmespath';
-import { selectRepos } from 'stores/reposStore';
-import { selectUser } from 'stores/userStore';
-import { set as setLoading, selectLoading } from 'stores/loadingStore';
+import * as reposStore from 'stores/reposStore';
+import * as userStore from 'stores/userStore';
+import * as loadingStore from 'stores/loadingStore';
 import * as githubService from 'services/githubService';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Edit() {
   const classes = useStyles();
   const { owner, name, fileName } = useParams();
-  const user = useSelector(selectUser);
-  const repos = useSelector(selectRepos);
-  const loading = useSelector(selectLoading);
+  const user = useSelector(userStore.get);
+  const repos = useSelector(reposStore.get);
+  const loading = useSelector(loadingStore.get);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -51,7 +51,7 @@ export default function Edit() {
       return;
     }
 
-    dispatch(setLoading(true));
+    dispatch(loadingStore.set(true));
 
     const repo = { owner, name };
     const file = await githubService.fetchFile(user.token, repo, fileName);
@@ -67,7 +67,7 @@ export default function Edit() {
 
     setFormData(null);
     setIsAlertOpen(true);
-    dispatch(setLoading(false));
+    dispatch(loadingStore.set(false));
   };
 
   return (

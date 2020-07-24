@@ -11,6 +11,6 @@ export const repoSlice = createSlice({
 
 export const { add, clear } = repoSlice.actions;
 
-export const selectRepos = (state) => state.repos;
+export const get = (state) => state.repos;
 
 export default repoSlice.reducer;

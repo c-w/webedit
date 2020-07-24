@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import RepoCard from 'components/RepoCard';
 import * as githubService from 'services/githubService';
-import { set as setLoading } from 'stores/loadingStore';
-import { selectUser } from 'stores/userStore';
-import { add as addRepo, selectRepos } from 'stores/reposStore';
+import * as loadingStore from 'stores/loadingStore';
+import * as userStore from 'stores/userStore';
+import * as reposStore from 'stores/reposStore';
 
 export default function Home() {
-  const user = useSelector(selectUser);
-  const repos = useSelector(selectRepos);
+  const user = useSelector(userStore.get);
+  const repos = useSelector(reposStore.get);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function Home() {
         return;
       }
 
-      dispatch(setLoading(true));
+      dispatch(loadingStore.set(true));
 
       const githubRepos = githubService.fetchRepos(user.token);
       const loading = [];
@@ -33,14 +33,14 @@ export default function Home() {
             .then((file) => {
               if (file?.text != null) {
                 const config = JSON.parse(file.text);
-                dispatch(addRepo({ repo, config }));
+                dispatch(reposStore.add({ repo, config }));
               }
             })
         );
       }
 
       await Promise.all(loading);
-      dispatch(setLoading(false));
+      dispatch(loadingStore.set(false));
     })();
   }, [user, repos, dispatch]);
 
