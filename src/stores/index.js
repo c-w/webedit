@@ -14,11 +14,13 @@ import {
   REGISTER,
 } from 'redux-persist';
 import * as localforage from 'localforage';
+import alertReducer from 'stores/alertStore';
 import loadingReducer from 'stores/loadingStore';
 import userReducer, { logout } from 'stores/userStore';
 import reposReducer from 'stores/reposStore';
 
 const appReducer = combineReducers({
+  alert: alertReducer,
   loading: loadingReducer,
   user: userReducer,
   repos: reposReducer,

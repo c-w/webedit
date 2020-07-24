@@ -3,11 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
 import SaveIcon from '@material-ui/icons/Save';
-import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
 import Form from '@rjsf/material-ui';
 import * as jmespath from 'jmespath';
+import * as alertStore from 'stores/alertStore';
 import * as reposStore from 'stores/reposStore';
 import * as userStore from 'stores/userStore';
 import * as loadingStore from 'stores/loadingStore';
@@ -32,7 +31,6 @@ export default function Edit() {
   const loading = useSelector(loadingStore.get);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState();
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const config = repos.find(
     ({ repo }) => repo.owner === owner && repo.name === name
@@ -40,10 +38,6 @@ export default function Edit() {
 
   const onChange = (event) => {
     setFormData(event.formData);
-  };
-
-  const onCloseAlert = () => {
-    setIsAlertOpen(false);
   };
 
   const onSubmit = async () => {
@@ -56,17 +50,27 @@ export default function Edit() {
     const repo = { owner, name };
     const file = await githubService.fetchFile(user.token, repo, fileName);
 
-    const fileJson = JSON.parse(file.text);
-    const fileItems = config.path
-      ? jmespath.search(fileJson, config.path)
-      : fileJson;
-    fileItems.unshift(formData);
-    const newFile = { text: JSON.stringify(fileJson, null, 2), sha: file.sha };
+    let alert;
+    if (file == null) {
+      alert = { message: 'Error', severity: 'error' };
+    } else {
+      const fileJson = JSON.parse(file.text);
+      const fileItems = config.path
+        ? jmespath.search(fileJson, config.path)
+        : fileJson;
+      fileItems.unshift(formData);
+      const newFile = {
+        text: JSON.stringify(fileJson, null, 2),
+        sha: file.sha,
+      };
 
-    await githubService.saveFile(user.token, repo, fileName, newFile);
+      await githubService.saveFile(user.token, repo, fileName, newFile);
 
-    setFormData(null);
-    setIsAlertOpen(true);
+      setFormData(null);
+      alert = { message: 'Item saved', severity: 'success' };
+    }
+
+    dispatch(alertStore.set(alert));
     dispatch(loadingStore.set(false));
   };
 
@@ -90,15 +94,6 @@ export default function Edit() {
           <SaveIcon className={classes.icon} /> Save
         </Fab>
       </Form>
-      <Snackbar
-        open={isAlertOpen}
-        autoHideDuration={6000}
-        onClose={onCloseAlert}
-      >
-        <Alert onClose={onCloseAlert} severity="success">
-          Saved item
-        </Alert>
-      </Snackbar>
     </>
   );
 }

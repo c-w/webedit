@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
@@ -14,10 +15,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
+import Snackbar from '@material-ui/core/Snackbar';
 import SyncIcon from '@material-ui/icons/Sync';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import * as alertStore from 'stores/alertStore';
 import * as loadingStore from 'stores/loadingStore';
 import * as userStore from 'stores/userStore';
 import * as reposStore from 'stores/reposStore';
@@ -48,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Layout({ children }) {
+  const alert = useSelector(alertStore.get);
   const user = useSelector(userStore.get);
   const loading = useSelector(loadingStore.get);
   const dispatch = useDispatch();
@@ -66,6 +70,10 @@ export default function Layout({ children }) {
     }
 
     setDrawerOpen(false);
+  };
+
+  const onCloseAlert = () => {
+    dispatch(alertStore.clear());
   };
 
   return (
@@ -118,6 +126,17 @@ export default function Layout({ children }) {
         />
         <Container maxWidth="lg" className={classes.container}>
           {children}
+          <Snackbar
+            open={alert != null}
+            autoHideDuration={6000}
+            onClose={onCloseAlert}
+          >
+            {alert && (
+              <Alert onClose={onCloseAlert} severity={alert.severity}>
+                {alert.message}
+              </Alert>
+            )}
+          </Snackbar>
         </Container>
       </main>
     </div>
