@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
 import SaveIcon from '@material-ui/icons/Save';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,7 +34,7 @@ export default function Edit() {
 
   const config = repos.find(
     ({ repo }) => repo.owner === owner && repo.name === name
-  ).config[fileName];
+  )?.config[fileName];
 
   const onChange = (event) => {
     setFormData(event.formData);
@@ -82,6 +82,10 @@ export default function Edit() {
     dispatch(alertStore.set(alert));
     dispatch(loadingStore.set(false));
   };
+
+  if (!config) {
+    return <Redirect to="/home" />;
+  }
 
   return (
     <>
