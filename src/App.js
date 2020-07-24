@@ -11,7 +11,7 @@ const Index = () => <Redirect to="/home" />;
 
 export default function App() {
   return (
-    <div>
+    <>
       <CssBaseline />
       <HashRouter>
         <Layout>
@@ -25,6 +25,6 @@ export default function App() {
           <Route exact path="/login" component={Login} />
         </Layout>
       </HashRouter>
-    </div>
+    </>
   );
 }
