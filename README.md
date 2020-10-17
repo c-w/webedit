@@ -1,5 +1,7 @@
 # :pencil: webedit
 
+[![CI status](https://github.com/c-w/webedit/workflows/CI/badge.svg)](https://github.com/c-w/webedit/actions?query=workflow%3ACI)
+
 ## What's this?
 
 > :wrench: Webedit is a tool that lets you auto-generate UIs to edit JSON files on Github :octocat:.
