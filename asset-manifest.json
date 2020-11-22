@@ -1,19 +1,17 @@
 {
   "files": {
-    "main.js": "/webedit/static/js/main.29f71b33.chunk.js",
-    "main.js.map": "/webedit/static/js/main.29f71b33.chunk.js.map",
-    "runtime-main.js": "/webedit/static/js/runtime-main.1a7dab3b.js",
-    "runtime-main.js.map": "/webedit/static/js/runtime-main.1a7dab3b.js.map",
-    "static/js/2.6a7763c0.chunk.js": "/webedit/static/js/2.6a7763c0.chunk.js",
-    "static/js/2.6a7763c0.chunk.js.map": "/webedit/static/js/2.6a7763c0.chunk.js.map",
+    "main.js": "/webedit/static/js/main.001cfd9b.chunk.js",
+    "main.js.map": "/webedit/static/js/main.001cfd9b.chunk.js.map",
+    "runtime-main.js": "/webedit/static/js/runtime-main.5bc0e8ba.js",
+    "runtime-main.js.map": "/webedit/static/js/runtime-main.5bc0e8ba.js.map",
+    "static/js/2.00ce8594.chunk.js": "/webedit/static/js/2.00ce8594.chunk.js",
+    "static/js/2.00ce8594.chunk.js.map": "/webedit/static/js/2.00ce8594.chunk.js.map",
     "index.html": "/webedit/index.html",
-    "precache-manifest.e26936eb90ce6cca964a4555ade7318c.js": "/webedit/precache-manifest.e26936eb90ce6cca964a4555ade7318c.js",
-    "service-worker.js": "/webedit/service-worker.js",
-    "static/js/2.6a7763c0.chunk.js.LICENSE.txt": "/webedit/static/js/2.6a7763c0.chunk.js.LICENSE.txt"
+    "static/js/2.00ce8594.chunk.js.LICENSE.txt": "/webedit/static/js/2.00ce8594.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.1a7dab3b.js",
-    "static/js/2.6a7763c0.chunk.js",
-    "static/js/main.29f71b33.chunk.js"
+    "static/js/runtime-main.5bc0e8ba.js",
+    "static/js/2.00ce8594.chunk.js",
+    "static/js/main.001cfd9b.chunk.js"
   ]
 }
