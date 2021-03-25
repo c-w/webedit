@@ -17,7 +17,7 @@ Using webedit is super simple:
 3. :notebook: Start editing JSON files using a nice UI based on [Material design](https://material-ui.com/)
 4. :heavy_check_mark: Webedit will automatically update the files for you using the [Github API](https://docs.github.com/en/rest)
 
-Webedit will crawl your repositories and generate a UI for each repository that contains a `.webedit.json` file at the root. The schema for the configuration file is as follows:
+Webedit will crawl your repositories and generate a UI for each repository that contains a `.webedit.json` or `.webedit.yaml` file at the root. The schema for the configuration file is as follows:
 
 ```jsonc
 {

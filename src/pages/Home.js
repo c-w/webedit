@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import * as YAML from 'js-yaml';
 import RepoCard from 'components/RepoCard';
 import * as githubService from 'services/githubService';
 import * as alertStore from 'stores/alertStore';
 import * as loadingStore from 'stores/loadingStore';
 import * as userStore from 'stores/userStore';
 import * as reposStore from 'stores/reposStore';
+
+const SUPPORTED_FILE_TYPES = [
+  { extension: 'json', loader: JSON.parse },
+  { extension: 'yaml', loader: YAML.load },
+  { extension: 'yml', loader: YAML.load },
+];
 
 export default function Home() {
   const user = useSelector(userStore.get);
@@ -28,20 +35,22 @@ export default function Home() {
           continue;
         }
 
-        loading.push(
-          githubService
-            .fetchFile(user.token, repo, '.webedit.json')
-            .then((file) => {
-              const config = JSON.parse(file.text);
-              dispatch(reposStore.add({ repo, config }));
-            })
-            .catch((error) =>
-              error.message === 'Not Found' ||
-              error.message === 'This repository is empty.'
-                ? Promise.resolve()
-                : Promise.reject(error)
-            )
-        );
+        for (const { extension, loader } of SUPPORTED_FILE_TYPES) {
+          loading.push(
+            githubService
+              .fetchFile(user.token, repo, `.webedit.${extension}`)
+              .then((file) => {
+                const config = loader(file.text);
+                dispatch(reposStore.add({ repo, config }));
+              })
+              .catch((error) =>
+                error.message === 'Not Found' ||
+                error.message === 'This repository is empty.'
+                  ? Promise.resolve()
+                  : Promise.reject(error)
+              )
+          );
+        }
       }
 
       try {
