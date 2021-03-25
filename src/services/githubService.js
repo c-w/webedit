@@ -80,7 +80,7 @@ export async function* fetchRepos(token) {
     }
 
     const link = response.headers.get('link');
-    url = link.match(/<(?<url>[^>]+)>;\s*rel="next"/)?.groups?.url;
+    url = link?.match(/<(?<url>[^>]+)>;\s*rel="next"/)?.groups?.url;
   }
 }
 
