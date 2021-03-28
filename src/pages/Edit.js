@@ -40,7 +40,7 @@ export default function Edit() {
     setFormData(event.formData);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (_formdata, event) => {
     if (loading) {
       return;
     }
@@ -76,6 +76,11 @@ export default function Edit() {
 
     if (!alert) {
       setFormData(null);
+
+      for (const textarea of event.target.getElementsByTagName('textarea')) {
+        textarea.value = '';
+      }
+
       alert = { message: 'Item saved', severity: 'success' };
     }
 
